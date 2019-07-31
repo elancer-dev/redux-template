@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { IState, IAction, IActionData } from './../../utils/types';
+import { IState, IAction, IActionData, IActionsHandler, IActionsHandlerKeys, actionsHandlerSchema } from './../../utils/types';
 import { action } from './../../utils/reducer';
+import { actionsHandler } from './../../utils/actions';
 import Helper from './../../lib/helper';
 
 interface IProps {
@@ -11,7 +12,7 @@ interface IProps {
 }
 
 interface IPS extends IProps, IState {
-    action: (type: string, data: IActionData) => IAction;
+    action: <T extends keyof IActionsHandler>(type: T, data: actionsHandlerSchema[T]) => IAction;
 }
 
 class CalcTest extends React.PureComponent<IPS> {

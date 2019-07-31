@@ -1,8 +1,8 @@
 import { IState, IActionData } from './types';
 
-export const actionsHandler: { [item: string]: (state: IState, data: IActionData) => IState } = {
+export const actionsHandler = {
 
-    changeScore: (state: IState, data: IActionData) => {
+    changeScore: (state: IState, data: { score: number }): IState => {
 
         var newState = { ...state };
 
@@ -12,7 +12,7 @@ export const actionsHandler: { [item: string]: (state: IState, data: IActionData
 
     },
 
-    clearScore: (state: IState, data: IActionData): IState => {
+    clearScore: (state: IState, data: {}): IState => {
 
         var newState = { ...state };
 
