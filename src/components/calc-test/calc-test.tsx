@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { IState, IAction, IActionData, IActionsHandler, IActionsHandlerKeys, actionsHandlerSchema } from './../../utils/types';
+import { IState, IAction, IActionsHandler, IActionsHandlerSchema } from './../../utils/types';
 import { action } from './../../utils/reducer';
-import { actionsHandler } from './../../utils/actions';
 import Helper from './../../lib/helper';
 
 interface IProps {
@@ -12,17 +11,19 @@ interface IProps {
 }
 
 interface IPS extends IProps, IState {
-    action: <T extends keyof IActionsHandler>(type: T, data: actionsHandlerSchema[T]) => IAction;
+    action: <T extends keyof IActionsHandler>(type: T, data: IActionsHandlerSchema<T>) => IAction<any>;
 }
 
 class CalcTest extends React.PureComponent<IPS> {
 
-    constructor(props: IPS) {
-        super(props);
-    }
+    // constructor(props: IPS) {
+    //     super(props);
+    // }
 
     componentDidMount() {
         this.props.action('changeScore', { score: this.props.showRandom ? Helper.getRandom(0, 10) : this.props.initScoreOnMount });
+        this.props.action('someAnotherFunctionWithLongLongName', { add: 12 });
+        this.props.action('someAnotherFunctionWithLongLongName', { add: 12, mult: 3 });
     }
 
     buttonClickHandler() {

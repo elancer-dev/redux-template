@@ -1,16 +1,20 @@
-import { IState, IAction, IActionData } from './types';
+import { IState, IAction, IActionsHandler } from './types';
 import { actionsHandler } from './actions';
 
 const initialState: IState = {
     score: 0,
 }
 
-export function reducer(state: IState = initialState, action: IAction): IState {
+export function reducer(state: IState = initialState, action: IAction<any>): IState {
 
-    return actionsHandler[action.type](state, action.data);
+    if (typeof actionsHandler[action.type] === 'function') {
+        return actionsHandler[action.type](state, action.data);
+    } else {
+        return state;
+    }
 
 }
 
-export function action(type: any, data: any): IAction {
+export function action<T extends keyof IActionsHandler, D>(type: T, data: D): IAction<D> {
     return { type: type, data: data }
 }
