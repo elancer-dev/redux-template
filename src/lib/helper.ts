@@ -8,6 +8,10 @@ export const Helper = {
         return (typeof val !== 'undefined' && val !== null);
     },
 
+    isFunction: <T>(val: Function | any): val is Function => {
+        return (typeof val === 'function');
+    },
+
 }
 
 export default Helper;

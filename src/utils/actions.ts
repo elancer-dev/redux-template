@@ -1,40 +1,59 @@
-import { IState } from './types';
-import Helper from '../lib/helper';
+import { IState, IAction } from './types';
+// import Helper from '../lib/helper';
 
 export const actionsHandler = {
 
-    changeScore: (state: IState, data: { score: number }): IState => {
+    setInterval: (state: IState, data: { val: number }): IState => {
 
-        var newState = { ...state };
+        var newState: IState;
 
-        newState.score = data.score;
-
-        return newState;
-
-    },
-
-    clearScore: (state: IState, data: {}): IState => {
-
-        var newState = { ...state };
-
-        newState.score = 0;
-
-        return newState;
-
-    },
-
-    someAnotherFunctionWithLongLongName: (state: IState, data: { add: number, mult?: number }): IState => {
-
-        var newState = { ...state };
-
-        newState.score += data.add;
-
-        if (Helper.isSet(data.mult)) {
-            newState.score *= data.mult;
+        if (data.val >= 0) {
+            newState = { ...state };
+            newState.timerInterval = data.val;
+        } else {
+            newState = state;
         }
 
         return newState;
 
     },
 
+    clearInterval: (state: IState, data: {}): IState => {
+
+        var newState = { ...state };
+
+        newState.timerInterval = 0;
+
+        return newState;
+
+    },
+
+    addInterval: (state: IState, data: { add: number }): IState => {
+
+        var newState = { ...state };
+
+        newState.timerInterval += data.add;
+
+        if (newState.timerInterval < 0)
+            newState.timerInterval = 0;
+
+        return newState;
+
+    },
+
+    multInterval: (state: IState, data: { mult: number }): IState => {
+
+        var newState = { ...state };
+
+        newState.timerInterval *= data.mult;
+
+        return newState;
+
+    },
+
+
+}
+
+export const action = <H extends object, T extends keyof H, D>(h: H, t: T, d: D): IAction<H, D> => {
+    return { type: t, data: d, handler: h }
 }

@@ -1,16 +1,14 @@
-import { actionsHandler } from './actions';
-
 export interface IState {
-    score: number;
+    timerInterval: number;
+    label: string;
 }
 
-export interface IAction<D> {
-    type: keyof IActionsHandler;
+export interface IAction<H extends object, D> {
+    handler: H;
+    type: keyof H;
     data: D;
 }
 
-export type IActionsHandler = typeof actionsHandler;
+export type DataArgumentType<F> = F extends (s: IState, d: infer D) => IState ? D : never;
 
-export type DataArgumentType<F extends Function> = F extends (s: IState, d: infer D) => any ? D : never;
-
-export type IActionsHandlerSchema<T extends keyof IActionsHandler> = DataArgumentType<IActionsHandler[T]>;
+// export type IActionsHandlerSchema<H, T extends keyof H> = DataArgumentType<H[T]>;

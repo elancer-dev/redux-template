@@ -1,20 +1,16 @@
-import { IState, IAction, IActionsHandler } from './types';
-import { actionsHandler } from './actions';
+import { IState, IAction } from './types';
 
 const initialState: IState = {
-    score: 0,
+    timerInterval: 0,
+    label: 'TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. Any browser. Any host. Any OS. Open source.',
 }
 
-export function reducer(state: IState = initialState, action: IAction<any>): IState {
+export function reducer(state: IState = initialState, action: IAction<any, any>): IState {
 
-    if (typeof actionsHandler[action.type] === 'function') {
-        return actionsHandler[action.type](state, action.data);
+    if (action.handler !== undefined && typeof action.handler[action.type] === 'function') {
+        return action.handler[action.type](state, action.data);
     } else {
         return state;
     }
 
-}
-
-export function action<T extends keyof IActionsHandler, D>(type: T, data: D): IAction<D> {
-    return { type: type, data: data }
 }
